@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+// import InputNumber from './InputNumber'
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -7,7 +8,10 @@ export default class Home extends React.Component {
   }
 
   render() {
-    return (<div>Home</div>);
+    return (<div>
+      Home
+      <input />
+    </div>);
   }
 }
 
