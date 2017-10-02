@@ -1,52 +1,65 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-// import InputNumber from './InputNumber'
+import TestCase from './TestCase'
+import InputNumber from './inputNumber'
 
-export default class Home extends React.Component {
+export default class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      testCasesLength: 1,
+      renderMap:[0],
+    }
+  }
+  updateTestCases = (indexTestCase, arrayTestCase) => {
+    let { renderMap } = this.state
+    renderMap[indexTestCase] = arrayTestCase;
+    this.setState({renderMap})
+    console.log(renderMap)
+  }
+  onChangeNumber = (name, value) =>{
+    let { renderMap } = this.state
+    const newValue = parseInt(value)
+    if(newValue < renderMap.length){
+      renderMap.splice(renderMap.length - 1,1)
+    }else{
+      renderMap.push(0)
+    }
+    this.setState({
+      [name]: parseInt(newValue),
+      renderMap: renderMap,
+    })
+  }
+  onSubmit = () => {
+    fetch("http://127.0.0.1:8000/Matrix",
+    {
+        method: "POST",
+        body: this.state.renderMap,
+    })
+    .then(function(res){ return res.json(); })
+    .then(function(data){ alert( JSON.stringify( data ) ) })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   render() {
     return (
       <div className="container">
-        Cantida de test cases <input  type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-        <div className="container content-testcase">
-          Test 1
-          <div>
-            <div>
-            tamaño de Matrix <input  type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-            </div>
-            <div>
-            cantidad de operaciones <input  type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-            </div>
-            <div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Seleccione una operacion
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item">Query</a>
-                        <a class="dropdown-item">Update</a>
-                      </div>
-                    </div>
-                    <input type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-                    <input type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-                    <input type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-                    <input type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-                    <input type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-                    <input type="number" min="1" class="form-control" aria-label="Text input with dropdown button" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <h3>
+          Cantida de pruebas <InputNumber value={this.state.testCasesLength} onChange={this.onChangeNumber} name="testCasesLength" placeholder="Cantida de test cases" />
+        </h3>
+        {
+          this.state.renderMap.map(
+            (item, key) =>
+            <TestCase index={key} update={this.updateTestCases} key={key} />
+          )
+        }
+        <div className="submit">
+          <button onClick={this.onSubmit} type="button" class="btn btn-secondary">Enviar</button>
         </div>
       </div>
-);
+    );
   }
 }
 
