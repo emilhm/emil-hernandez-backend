@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class MainController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+  
 	/**
 	 * @description: update operation handler.
 	 * updates (x, y, z) position of the matrix with w.
