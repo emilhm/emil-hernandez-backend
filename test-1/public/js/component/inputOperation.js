@@ -6,16 +6,36 @@ export default class InputOperation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      typeOperation: 'Query',
-      inputs: Array(4).fill(0),
+      typeOperation: 'Update',
+      inputs: Array(4).fill(1),
+    }
+    props.update(props.index, ['Update',...Array(4).fill(1)])
+  }
+  onChangeNumber = (event,key) => {
+    let { inputs, typeOperation } = this.state
+    const { index, update } = this.props
+    const newValue = parseInt(event.target.value, 10)
+    if(newValue){
+      inputs[key] = newValue
+      if(key < 3 && inputs.length === 6){
+        if(inputs[key] > inputs[key + 3]){
+          inputs[key + 3] = newValue
+        }
+      } else if(key < 6  && inputs.length === 6){
+        if(inputs[key] < inputs[key - 3]){
+          inputs[key - 3] = newValue
+        }
+      }
+      this.setState({inputs})
+      update(index, [typeOperation,...inputs])
     }
   }
   onChange = ({name, value}) =>{
     let arrayInputs
-    if(value === 'Query'){
-      arrayInputs = Array(4).fill(0);
-    } else if(value === 'Update'){
-      arrayInputs = Array(7).fill(0);
+    if(value === 'Update'){
+      arrayInputs = Array(4).fill(1);
+    } else if(value === 'Query'){
+      arrayInputs = Array(6).fill(1);
     }
     this.setState({
       [name]: value,
@@ -37,7 +57,7 @@ export default class InputOperation extends Component {
         </div>
         {
           this.state.inputs.map((item, key) => {
-            return <input type="number" min="1" className="form-control" key={key} aria-label="Text input with dropdown button" />
+            return <input type="number" value={this.state.inputs[key]} onChange={(event) => this.onChangeNumber(event,key)} className="form-control" key={key} aria-label="Text input with dropdown button" />
           })
         }
       </div>
@@ -46,5 +66,6 @@ export default class InputOperation extends Component {
 }
 
 InputOperation.propTypes = {
-  index: PropTypes.number
+  index: PropTypes.number,
+  update: PropTypes.func,
 };

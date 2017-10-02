@@ -15,3 +15,7 @@
 .content-operation .form-control{
   max-width: 50px;
 }
+.submit{
+  margin-top: 1rem;
+  text-align: right;
+}

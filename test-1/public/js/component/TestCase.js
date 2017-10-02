@@ -10,28 +10,30 @@ export default class TestCase extends Component {
       matrixLength: 0,
       operationLength: 0,
       renderMap: [0],
-      typeOperation: 'Update',
-      inputs: Array(4).fill(0),
     }
   }
-  onChange = ({name, value}) =>{
-    let arrayInputs
-    if(value === 'Update'){
-      arrayInputs = Array(4).fill(0);
-    } else if(value === 'Query'){
-      arrayInputs = Array(6).fill(0);
-    }
-    this.setState({
-      [name]: value,
-      inputs: arrayInputs,
-    })
+  updateOperation = (indexOp, arrayOp) => {
+    const { index, update} = this.props
+    let { renderMap } = this.state
+    renderMap[indexOp] = arrayOp;
+    this.setState({renderMap})
+    update(index, {
+      matrixLength: this.state.matrixLength,
+      operations: renderMap,
+    });
   }
   onChangeNumber = (name, value) =>{
     const newValue = parseInt(value)
     if(name === 'operationLength'){
+      let { renderMap } = this.state
+      if(newValue < renderMap.length){
+        renderMap.splice(renderMap.length - 1,1)
+      }else{
+        renderMap.push(0)
+      }
       this.setState({
         [name]: parseInt(newValue),
-        renderMap: Array(newValue).fill(0)
+        renderMap: renderMap
       })
     } else{
       this.setState({
@@ -57,7 +59,7 @@ export default class TestCase extends Component {
                 (item, key) => {
                   return (
                     <div className="row no-gutters content-operation" key={key}>
-                      <InputOperation index={key} />
+                      <InputOperation index={key} update={this.updateOperation} />
                     </div>
                   )
                 })
@@ -70,5 +72,6 @@ export default class TestCase extends Component {
 }
 
 TestCase.propTypes = {
-  index: PropTypes.number
+  index: PropTypes.number,
+  update: PropTypes.func,
 };
