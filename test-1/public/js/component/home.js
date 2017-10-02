@@ -30,6 +30,18 @@ export default class Home extends Component {
       renderMap: renderMap,
     })
   }
+  onSubmit = () => {
+    fetch("http://127.0.0.1:8000/Matrix",
+    {
+        method: "POST",
+        body: this.state.renderMap,
+    })
+    .then(function(res){ return res.json(); })
+    .then(function(data){ alert( JSON.stringify( data ) ) })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
   render() {
     return (
@@ -44,7 +56,7 @@ export default class Home extends Component {
           )
         }
         <div className="submit">
-          <button type="button" class="btn btn-secondary">Enviar</button>
+          <button onClick={this.onSubmit} type="button" class="btn btn-secondary">Enviar</button>
         </div>
       </div>
     );

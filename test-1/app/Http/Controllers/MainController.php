@@ -10,8 +10,18 @@ class MainController extends Controller
 
   public function matrix(Request $request)
   {
-    # code...
-    return 'aqui';
+    $tests = $request['tests'];
+    if (!isset($tests)){
+      return response()->json(['error' => 'data were not provided'], 400);
+    }
+    if (!is_array($tests)){
+      return response()->json(['error' => 'data is not an array'], 400);
+    }
+    if (count($tests) < 1){
+      return response()->json(['error' => 'data array is empty'], 400);
+    }
+
+    return $tests;
   }
 
 	/**
