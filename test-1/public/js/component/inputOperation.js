@@ -15,7 +15,7 @@ export default class InputOperation extends Component {
     if(value === 'Query'){
       arrayInputs = Array(4).fill(0);
     } else if(value === 'Update'){
-      arrayInputs = Array(6).fill(0);
+      arrayInputs = Array(7).fill(0);
     }
     this.setState({
       [name]: value,
@@ -46,4 +46,5 @@ export default class InputOperation extends Component {
 }
 
 InputOperation.propTypes = {
+  index: PropTypes.number
 };

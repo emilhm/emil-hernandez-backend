@@ -23,7 +23,9 @@ export default class Home extends Component {
   render() {
     return (
       <div className="container">
-        Cantida de test cases <InputNumber value={this.state.testCasesLength} onChange={this.onChangeNumber} name="testCasesLength" placeholder="Cantida de test cases" />
+        <h3>
+          Cantida de pruebas <InputNumber value={this.state.testCasesLength} onChange={this.onChangeNumber} name="testCasesLength" placeholder="Cantida de test cases" />
+        </h3>
         {
           this.state.renderMap.map((item, key) => <TestCase index={key} key={key} />)
         }

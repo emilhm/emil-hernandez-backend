@@ -10,15 +10,15 @@ export default class TestCase extends Component {
       matrixLength: 0,
       operationLength: 0,
       renderMap: [0],
-      typeOperation: 'Query',
+      typeOperation: 'Update',
       inputs: Array(4).fill(0),
     }
   }
   onChange = ({name, value}) =>{
     let arrayInputs
-    if(value === 'Query'){
+    if(value === 'Update'){
       arrayInputs = Array(4).fill(0);
-    } else if(value === 'Update'){
+    } else if(value === 'Query'){
       arrayInputs = Array(6).fill(0);
     }
     this.setState({
@@ -43,7 +43,7 @@ export default class TestCase extends Component {
     const { index } = this.props
     return (
       <div className="container content-testcase">
-        Test {index+1}
+        <h4>Prueba {index+1}</h4>
         <div>
           <div>
             tamaño de Matrix <InputNumber value={this.state.matrixLength} onChange={this.onChangeNumber} name="matrixLength" placeholder="N"/>
@@ -56,7 +56,7 @@ export default class TestCase extends Component {
               this.state.renderMap.map(
                 (item, key) => {
                   return (
-                    <div className="row no-gutters" key={key}>
+                    <div className="row no-gutters content-operation" key={key}>
                       <InputOperation index={key} />
                     </div>
                   )
@@ -70,4 +70,5 @@ export default class TestCase extends Component {
 }
 
 TestCase.propTypes = {
+  index: PropTypes.number
 };
