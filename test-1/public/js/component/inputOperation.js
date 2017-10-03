@@ -31,12 +31,15 @@ export default class InputOperation extends Component {
     }
   }
   onChange = ({name, value}) =>{
+    const { index, update } = this.props
     let arrayInputs
     if(value === 'Update'){
       arrayInputs = Array(4).fill(1);
     } else if(value === 'Query'){
       arrayInputs = Array(6).fill(1);
     }
+    console.log(value, arrayInputs)
+    update(index, [value,...arrayInputs])
     this.setState({
       [name]: value,
       inputs: arrayInputs,

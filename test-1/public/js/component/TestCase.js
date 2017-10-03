@@ -7,8 +7,8 @@ export default class TestCase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      matrixLength: 0,
-      operationLength: 0,
+      matrixLength: 1,
+      operationLength: 1,
       renderMap: [0],
     }
   }
@@ -23,6 +23,7 @@ export default class TestCase extends Component {
     });
   }
   onChangeNumber = (name, value) =>{
+    const { index, update} = this.props
     const newValue = parseInt(value)
     if(name === 'operationLength'){
       let { renderMap } = this.state
@@ -39,6 +40,10 @@ export default class TestCase extends Component {
       this.setState({
         [name]: newValue
       })
+      update(index, {
+        matrixLength: newValue,
+        operations: this.state.renderMap,
+      });
     }
   }
   render() {

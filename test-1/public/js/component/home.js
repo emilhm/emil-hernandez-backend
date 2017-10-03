@@ -30,11 +30,29 @@ export default class Home extends Component {
       renderMap: renderMap,
     })
   }
+  serialize = (obj, prefix) => {
+    const str = [];
+
+    Object.keys(obj).forEach((p) => {
+      const k = prefix ? `${prefix}[${p}]` : p;
+      const v = obj[p];
+
+      str.push((v !== null && typeof v === 'object') ?
+        this.serialize(v, k) :
+        `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+    });
+
+    return str.join('&');
+  }
   onSubmit = () => {
-    fetch("http://127.0.0.1:8000/Matrix",
+    const urlParams = `?${this.serialize({'tests': this.state.renderMap})}`;
+    fetch(`http://127.0.0.1:8000/Matrix${urlParams}`,
     {
         method: "POST",
-        body: this.state.renderMap,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
     })
     .then(function(res){ return res.json(); })
     .then(function(data){ alert( JSON.stringify( data ) ) })
