@@ -38,7 +38,6 @@ export default class InputOperation extends Component {
     } else if(value === 'Query'){
       arrayInputs = Array(6).fill(1);
     }
-    console.log(value, arrayInputs)
     update(index, [value,...arrayInputs])
     this.setState({
       [name]: value,

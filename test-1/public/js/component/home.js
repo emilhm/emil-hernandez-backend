@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import TestCase from './TestCase'
 import InputNumber from './inputNumber'
+import Modal from './modal'
 
 export default class Home extends Component {
   constructor(props) {
@@ -9,13 +10,13 @@ export default class Home extends Component {
     this.state = {
       testCasesLength: 1,
       renderMap:[0],
+      results: [],
     }
   }
   updateTestCases = (indexTestCase, arrayTestCase) => {
     let { renderMap } = this.state
     renderMap[indexTestCase] = arrayTestCase;
     this.setState({renderMap})
-    console.log(renderMap)
   }
   onChangeNumber = (name, value) =>{
     let { renderMap } = this.state
@@ -54,10 +55,12 @@ export default class Home extends Component {
           'Content-Type': 'application/json'
         }
     })
-    .then(function(res){ return res.json(); })
-    .then(function(data){ alert( JSON.stringify( data ) ) })
+    .then((res) => { return res.json(); })
+    .then((results) => {
+      this.setState({results})
+    })
     .catch((err) => {
-      console.log(err)
+      this.setState({results: err})
     })
   }
 
@@ -74,8 +77,9 @@ export default class Home extends Component {
           )
         }
         <div className="submit">
-          <button onClick={this.onSubmit} type="button" class="btn btn-secondary">Enviar</button>
+          <button onClick={this.onSubmit} type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Enviar</button>
         </div>
+        <Modal results={this.state.results} />
       </div>
     );
   }
